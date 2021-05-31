@@ -332,6 +332,14 @@ lxi(void)
 }
 
 static void
+stax(void)
+{
+
+	fprintf(fq, "mov\tdi, %s\n", sixteen(a1));
+	fprintf(fq, "\tmov\t[di], al");
+}
+
+static void
 inr(void)
 {
 
@@ -353,6 +361,14 @@ mvi(void)
 }
 
 static void
+ldax(void)
+{
+
+	fprintf(fq, "mov\tsi, %s\n", sixteen(a1));
+	fprintf(fq, "\tmov\tal, [si]");
+}
+
+static void
 dcx(void)
 {
 
@@ -371,6 +387,20 @@ cma(void)
 {
 
 	fprintf(fq, "not\tal");
+}
+
+static void
+sta(void)
+{
+
+	fprintf(fq, "mov\t%s, al", a1);
+}
+
+static void
+lda(void)
+{
+
+	fprintf(fq, "mov\tal, %s", a1);
 }
 
 static void
@@ -842,12 +872,16 @@ struct trans {
 } tab[] = {
 	{ "nop", nop },
 	{ "lxi", lxi },
+	{ "stax", stax },
 	{ "inr", inr },
 	{ "dcr", dcr },
 	{ "mvi", mvi },
+	{ "ldax", ldax },
 	{ "dcx", dcx },
 	{ "daa", daa },
 	{ "cma", cma },
+	{ "sta", sta },
+	{ "lda", lda },
 	{ "cmc", cmc },
 	{ "mov", mov },
 	{ "hlt", hlt },
