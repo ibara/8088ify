@@ -14,25 +14,24 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
+#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 
 /*
- * 8088ify -- Intel 8080 CP/M to x86 (8088) MS-DOS assembly translator
+ * 8088ify -- Intel 8080 CP/M to 8086 (8088) MS-DOS assembly translator
  * Written for PCjam 2021: https://pcjam.gitlab.io/
  */
 
-static int lineno;
-static int pass;
-static int errors;
-static unsigned short addr;
-
-static char *lab;
-static char *op;
-static char *a1;
-static char *a2;
-
 static char line[256];
+
+static char lab[256];
+static char op[256];
+static char a1[256];
+static char a2[256];
+static char comm[256];
+
+static int bang;
 
 static int
 egetline(FILE *fp)
@@ -59,14 +58,179 @@ egetline(FILE *fp)
 }
 
 static int
+endoftoken(int ch)
+{
+	if (ch == ' ' || ch == '\t' || ch == ';' || ch == '\0' || ch == '!')
+		return 1;
+
+	return 0;
+}
+
+static void
+lex(void)
+{
+	int i, j;
+
+	/* Reset buffers */
+	bang = 0;
+	for (i = 0; i < sizeof(line); i++) {
+		lab[i] = '\0';
+		op[i] = '\0';
+		a1[i] = '\0';
+		a2[i] = '\0';
+		comm[i] = '\0';
+	}
+	i = 0;
+
+	/* Empty line special case */
+	if (line[0] == '\0')
+		return;
+
+	/* Label */
+	if (line[0] != ' ' && line[0] != '\t') {
+		j = 0;
+		while (!endoftoken(line[i]) && line[i] != ':')
+			lab[j++] = line[i++];
+		if (line[i] == '!') {
+			bang = i;
+			return;
+		}
+		if (line[i] == ':')
+			++i;
+	}
+
+	/* Whitespace */
+	while (i < sizeof(line) - 1 && (line[i] == ' ' || line[i] == '\t' ||
+	       line[i] == ';')) {
+		if (line[i] == '!') {
+			bang = i;
+			return;
+		}
+		if (line[i] == ';') {
+			j = 0;
+			while (line[i] != '\0')
+				comm[j++] = line[i++];
+			return;
+		}
+		++i;
+	}
+	if (i == sizeof(line) - 1)
+		return;
+
+	/* Opcode */
+	j = 0;
+	while (!endoftoken(line[i]))
+		op[j++] = line[i++];
+
+	if (line[i] == '!') {
+		bang = i;
+		return;
+	}
+
+	/* Whitespace */
+	while (i < sizeof(line) - 1 && (line[i] == ' ' || line[i] == '\t' ||
+	       line[i] == ';')) {
+		if (line[i] == '!') {
+			bang = i;
+			return;
+		}
+		if (line[i] == ';') {
+			j = 0;
+			while (line[i] != '\0')
+				comm[j++] = line[i++];
+			return;
+		}
+		++i;
+	}
+	if (i == sizeof(line) - 1)
+		return;
+
+	/* First argument */
+	j = 0;
+	if (line[i] == '\'') {
+		++i;
+		for (; i < sizeof(line) - 1; i++) {
+			if (line[i] == '\'') {
+				if (i != sizeof(line) - 2 &&
+				    line[i + 1] == '\'') {
+					a1[j++] = '\'';
+					++i;
+					continue;
+				} else {
+					break;
+				}
+			}
+
+			a1[j++] = line[i];
+		}
+		++i;
+	} else {
+		while (!endoftoken(line[i]) && line[i] != ',')
+			a1[j++] = line[i++];
+	}
+	if (line[i] == ',')
+		++i;
+
+	if (line[i] == '!') {
+		bang = i;
+		return;
+	}
+
+	/* Whitespace */
+	while (i < sizeof(line) - 1 && (line[i] == ' ' || line[i] == '\t' ||
+	       line[i] == ';')) {
+		if (line[i] == '!') {
+			bang = i;
+			return;
+		}
+		if (line[i] == ';') {
+			j = 0;
+			while (line[i] != '\0')
+				comm[j++] = line[i++];
+			return;
+		}
+		++i;
+	}
+	if (i == sizeof(line) - 1)
+		return;
+
+	/* Second argument */
+	j = 0;
+	while (!endoftoken(line[i]))
+		a2[j++] = line[i++];
+
+	if (line[i] == '!') {
+		bang = i;
+		return;
+	}
+
+	/* Whitespace */
+	while (i < sizeof(line) - 1 && (line[i] == ' ' || line[i] == '\t' ||
+	       line[i] == ';')) {
+		if (line[i] == '!') {
+			bang = i;
+			return;
+		}
+		if (line[i] == ';') {
+			j = 0;
+			while (line[i] != '\0')
+				comm[j++] = line[i++];
+			return;
+		}
+		++i;
+	}
+}
+
+static int
 assemble(FILE *fp, FILE *fq)
 {
 	int eoa;
 
 	eoa = egetline(fp);
+	lex();
 
 	// XXX
-	printf("%s\n", line);
+	printf("%s\t%s\t%s\t%s\t%s\n", lab, op, a1, a2, comm);
 
 	return eoa;
 }
