@@ -742,6 +742,14 @@ jpo(void)
 }
 
 static void
+xthl(void)
+{
+
+	fprintf(fq, "mov\tbp, sp\n");
+	fprintf(fq, "\txchg\tbx, [bp]");
+}
+
+static void
 cpo(void)
 {
 
@@ -758,12 +766,26 @@ ani(void)
 }
 
 static void
+pchl(void)
+{
+
+	fprintf(fq, "jmp\tbx");
+}
+
+static void
 jpe(void)
 {
 
 	fprintf(fq, "jnp\tL@%d\n\t", labno);
 	jmp();
 	newlab();
+}
+
+static void
+xchg(void)
+{
+
+	fprintf(fq, "xchg\tbx, dx");
 }
 
 static void
@@ -812,6 +834,13 @@ ori(void)
 {
 
 	fprintf(fq, "or\tal, %s", a1);
+}
+
+static void
+sphl(void)
+{
+
+	fprintf(fq, "mov\tsp, bx");
 }
 
 static void
@@ -938,7 +967,7 @@ struct trans {
 	{ "cnz", cnz },
 	{ "adi", adi },
 	{ "ret", ret },
-	{ "jz", jz} ,
+	{ "jz", jz },
 	{ "cz", cz },
 	{ "call", call },
 	{ "aci", aci },
@@ -951,15 +980,19 @@ struct trans {
 	{ "cc", cc },
 	{ "sbi", sbi },
 	{ "jpo", jpo },
+	{ "xthl", xthl },
 	{ "cpo", cpo },
 	{ "ani", ani },
+	{ "pchl", pchl },
 	{ "jpe", jpe },
+	{ "xchg", xchg },
 	{ "cpe", cpe },
 	{ "xri", xri },
 	{ "jp", jp },
 	{ "di", di },
 	{ "cp", cp },
 	{ "ori", ori },
+	{ "sphl", sphl },
 	{ "jm", jm },
 	{ "ei", ei },
 	{ "cm", cm },
