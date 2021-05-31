@@ -404,10 +404,24 @@ rar(void)
 }
 
 static void
+shld(void)
+{
+
+	fprintf(fq, "mov\t%s, bx", a1);
+}
+
+static void
 daa(void)
 {
 
 	fprintf(fq, "daa");
+}
+
+static void
+lhld(void)
+{
+
+	fprintf(fq, "mov\tbx, %s", a1);
 }
 
 static void
@@ -946,7 +960,9 @@ struct trans {
 	{ "rrc", rrc },
 	{ "ral", ral },
 	{ "rar", rar },
+	{ "shld", shld },
 	{ "daa", daa },
+	{ "lhld", lhld },
 	{ "cma", cma },
 	{ "sta", sta },
 	{ "stc", stc },
