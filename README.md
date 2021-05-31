@@ -50,6 +50,20 @@ includes a `strtol()` function. I may remedy this in the
 future with a built-in `strtol()` function, but as Open
 Watcom v2 has the function, I have not (yet) found a need.
 
+When compiling on Unix, the following compiler invocation is
+recomended:
+```
+$ cc -O2 -pipe -o 8088ify 8088ify.c
+```
+
+When compiling on MS-DOS with Open Watcom v2, the following
+compiler invocation is recommended:
+```
+> wcl -0 -os -mt 8088ify.c
+```
+
+The included `Makefile` is for Unix, sorry.
+
 Running
 -------
 `usage: 8088ify infile.asm outfile.asm`
