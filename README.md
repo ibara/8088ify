@@ -45,7 +45,10 @@ utility and written in ANSI C. As `8088ify` was written on
 [OpenBSD](https://www.openbsd.org/), I can verify that it
 works equally as well on Unix as MS-DOS.
 
-`8088ify` should compile with any ANSI C compiler.
+`8088ify` should compile with any ANSI C compiler that
+includes a `strtol()` function. I may remedy this in the
+future with a built-in `strtol()` function, but as Open
+Watcom v2 has the function, I have not (yet) found a need.
 
 Running
 -------
@@ -64,9 +67,9 @@ Creating binaries
 [nasm](https://nasm.us/).
 It has been a long time since nasm built 16-bit DOS
 binaries. In this repository you will find binaries of nasm
-0.98.31, as found on Sourceforge
-[Sourceforget](https://sourceforge.net/projects/nasm/files/DOS%2016-bit%20binaries%20%28OBSOLETE%29/),
-which do work in an 8086 (tested via DOSBox-X).
+0.98.31, as found on
+[Sourceforge](https://sourceforge.net/projects/nasm/files/DOS%2016-bit%20binaries%20%28OBSOLETE%29/),
+which do work on an 8086 (tested via DOSBox-X).
 
 To create binaries, the following nasm command can be used:
 ```
