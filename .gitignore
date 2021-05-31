@@ -1,3 +1,4 @@
-*.asm
-*.o
 8088ify
+8088ify.core
+8088ify.o
+out.asm

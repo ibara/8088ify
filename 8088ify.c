@@ -346,10 +346,17 @@ ret(void)
 	fprintf(fq, "\tret");
 }
 
+/*
+ * Checking special cases for call.
+ *
+ * Returns 1 if 0005h
+ * Returns 2 if 0000h
+ * Returns 0 otherwise
+ */
 static int
 numcheck(void)
 {
-	int base;
+	int base, ret;
 
 	if (isdigit(a1[0]) && (a1[strlen(a1) - 1] == 'H' ||
 	    a1[strlen(a1) - 1] == 'h')) {
@@ -363,6 +370,8 @@ numcheck(void)
 check:
 		if (strtol(a1, NULL, base) == 5)
 			return 1;
+		if (strtol(a1, NULL, base) == 0)
+			return 2;
 	} else if (isalpha(a1[0])) {
 		if (bdosfound) {
 			if (!strcmp(a1, bdos))
@@ -388,11 +397,14 @@ static void
 call(void)
 {
 
-	if (isbdos()) {
+	if (isbdos() == 1) {
 		fprintf(fq, "\tpush\tax\n");
 		fprintf(fq, "\tmov\tah, cl\n");
 		fprintf(fq, "\tint\t21h\n");
 		fprintf(fq, "\tpop\tax");
+	} else if (isbdos() == 2) {
+		fprintf(fq, "\tmov\tah, 4ch\n");
+		fprintf(fq, "\tint\t21h");
 	} else {
 		fprintf(fq, "\tcall\t%s", a1);
 	}
@@ -462,8 +474,11 @@ translate(void)
 			tab[i].cb();
 	}
 
-	if (comm[0] != '\0')
-		fprintf(fq, "\t%s", comm);
+	if (comm[0] != '\0') {
+		if (lab[0] != '\0' || op[0] != '\0')
+			fputc('\t', fq);
+		fprintf(fq, "%s", comm);
+	}
 	fputc('\n', fq);
 }
 

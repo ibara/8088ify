@@ -96,6 +96,12 @@ An attempt is made to detect calls to the CP/M BDOS:
 5 to a label will be assumed to be the BDOS label and used
 for all `call` checks.
 
+Calls to `0000h` are also special-cased and will result in
+an MS-DOS termination call.
+
+Line separation with `!` is detected but not properly used.
+Split those lines before running `8088ify`.
+
 License
 -------
 ISC License. See `LICENSE` for details.
