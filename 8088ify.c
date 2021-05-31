@@ -17,11 +17,14 @@
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 /*
  * 8088ify -- Intel 8080 CP/M to 8086 (8088) MS-DOS assembly translator
  * Written for PCjam 2021: https://pcjam.gitlab.io/
  */
+
+FILE *fq;
 
 static char line[256];
 
@@ -120,7 +123,7 @@ lex(void)
 	/* Opcode */
 	j = 0;
 	while (!endoftoken(line[i]))
-		op[j++] = line[i++];
+		op[j++] = tolower(line[i++]);
 
 	if (line[i] == '!') {
 		bang = i;
@@ -147,23 +150,74 @@ lex(void)
 
 	/* First argument */
 	j = 0;
-	if (line[i] == '\'') {
-		++i;
-		for (; i < sizeof(line) - 1; i++) {
-			if (line[i] == '\'') {
-				if (i != sizeof(line) - 2 &&
-				    line[i + 1] == '\'') {
-					a1[j++] = '\'';
-					++i;
-					continue;
-				} else {
-					break;
-				}
+	if (!strcmp(op, "db")) {
+again:
+		/* Whitespace */
+		while (i < sizeof(line) - 1 && (line[i] == ' ' ||
+		       line[i] == '\t' || line[i] == ';')) {
+			if (line[i] == '!') {
+				bang = i;
+				return;
 			}
-
-			a1[j++] = line[i];
+			if (line[i] == ';') {
+				j = 0;
+				while (line[i] != '\0')
+					comm[j++] = line[i++];
+				return;
+			}
+			++i;
 		}
-		++i;
+		if (i == sizeof(line) - 1)
+			return;
+
+		if (line[i] == '\'') {
+			a1[j++] = line[i++];
+			for (; i < sizeof(line) - 1; i++) {
+				if (line[i] == '\'') {
+					if (i != sizeof(line) - 2 &&
+					    line[i + 1] == '\'') {
+						a1[j++] = '\'';
+						++i;
+						continue;
+					} else {
+						break;
+					}
+				}
+
+				a1[j++] = line[i];
+			}
+			a1[j++] = line[i++];
+			/* Whitespace */
+			while (i < sizeof(line) - 1 && (line[i] == ' ' ||
+			       line[i] == '\t' || line[i] == ';')) {
+				if (line[i] == '!') {
+					bang = i;
+					return;
+				}
+				if (line[i] == ';') {
+					j = 0;
+					while (line[i] != '\0')
+						comm[j++] = line[i++];
+					return;
+				}
+				++i;
+			}
+			if (i == sizeof(line) - 1)
+				return;
+
+			if (line[i] == ',') {
+				a1[j++] = line[i++];
+				goto again;
+			}
+		} else {
+			while (line[i] != ';' && line[i] != '!' &&
+			       line[i] != '\0' && line[i] != ',')
+				a1[j++] = line[i++];
+			if (line[i] == ',') {
+				a1[j++] = line[i++];
+				goto again;
+			}
+		}
 	} else {
 		while (!endoftoken(line[i]) && line[i] != ',')
 			a1[j++] = line[i++];
@@ -221,16 +275,151 @@ lex(void)
 	}
 }
 
+static char *
+eight(char *a)
+{
+
+	if (!strcmp(a, "A") || !strcmp(a, "a"))
+		return "al";
+	if (!strcmp(a, "B") || !strcmp(a, "b"))
+		return "ch";
+	if (!strcmp(a, "C") || !strcmp(a, "c"))
+		return "cl";
+	if (!strcmp(a, "D") || !strcmp(a, "d"))
+		return "dh";
+	if (!strcmp(a, "E") || !strcmp(a, "e"))
+		return "hl";
+	if (!strcmp(a, "H") || !strcmp(a, "h"))
+		return "bh";
+	if (!strcmp(a, "L") || !strcmp(a, "l"))
+		return "bl";
+
+	return a;
+}
+
+static char *
+sixteen(char *a)
+{
+
+	if (!strcmp(a, "B") || !strcmp(a, "b"))
+		return "cx";
+	if (!strcmp(a, "D") || !strcmp(a, "d"))
+		return "dx";
+	if (!strcmp(a, "H") || !strcmp(a, "h"))
+		return "bx";
+	if (!strcmp(a, "PSW") || !strcmp(a, "psw"))
+		return "ax";
+
+	return a;
+}
+
+static void
+nop(void)
+{
+
+	fprintf(fq, "\tnop");
+}
+
+static void
+lxi(void)
+{
+
+	fprintf(fq, "\tmov\t");
+	fprintf(fq, "%s, %s", sixteen(a1), a2);
+}
+
+static void
+mvi(void)
+{
+
+	fprintf(fq, "\tmov\t");
+	fprintf(fq, "%s, %s", eight(a1), a2);
+	fprintf(fq, "\n\tmov\tah, %s", eight(a1));
+}
+
+static void
+ret(void)
+{
+
+	fprintf(fq, "\tret");
+}
+
+static void
+call(void)
+{
+
+	fprintf(fq, "\tint\t21h");
+}
+
+static void
+org(void)
+{
+
+	fprintf(fq, "\torg\t%s", a1);
+}
+
+static void
+equ(void)
+{
+
+	fprintf(fq, "\tequ\t%s", a1);
+}
+
+static void
+db(void)
+{
+
+	fprintf(fq, "\tdb\t%s", a1);
+}
+
+/*
+ * Big switch of all 8080 opcodes and their 8086 translations.
+ */
+struct trans {
+	const char *op80;
+	void (*cb)(void);
+} tab[] = {
+	{ "nop", nop },
+	{ "lxi", lxi },
+	{ "mvi", mvi },
+	{ "ret", ret },
+	{ "call", call },
+	{ "org", org },
+	{ "equ", equ },
+	{ "db", db }
+};
+
+static void
+translate(void)
+{
+	int i;
+
+	if (lab[0] != '\0') {
+		fprintf(fq, "%s", lab);
+		if (!!strcmp(op, "equ"))
+			fputc(':', fq);
+	}
+
+	for (i = 0; i < sizeof(tab) / sizeof(tab[0]); i++) {
+		if (!strcmp(op, tab[i].op80))
+			tab[i].cb();
+	}
+
+	if (comm[0] != '\0')
+		fprintf(fq, "\t%s", comm);
+	fputc('\n', fq);
+}
+
 static int
-assemble(FILE *fp, FILE *fq)
+assemble(FILE *fp)
 {
 	int eoa;
 
 	eoa = egetline(fp);
+
 	lex();
 
-	// XXX
-	printf("%s\t%s\t%s\t%s\t%s\n", lab, op, a1, a2, comm);
+	translate();
 
 	return eoa;
 }
@@ -238,7 +427,7 @@ assemble(FILE *fp, FILE *fq)
 int
 main(int argc, char *argv[])
 {
-	FILE *fp, *fq;
+	FILE *fp;
 
 	if (argc != 3) {
 		fputs("usage: 8088 infile.asm outfile.asm\n", stderr);
@@ -256,7 +445,7 @@ main(int argc, char *argv[])
 		exit(1);
 	}
 
-	while (assemble(fp, fq))
+	while (assemble(fp))
 		;
 
 	fclose(fq);
