@@ -91,7 +91,9 @@ nasm -f bin -o prog.com prog.asm
 ```
 Where `prog.asm` is the name of your assembly program output
 from `8088ify` and `prog.com` is the name you want for your
-final binary.
+final binary. This also means that all programs translated
+by `8088ify` target the tiny memory model only. This could
+be improved in the future.
 
 NOTE: This version of nasm is licensed under the LGPLv2.1+.
 You can find a copy of the LGPLv2.1 license
