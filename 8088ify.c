@@ -320,30 +320,63 @@ static void
 nop(void)
 {
 
-	fprintf(fq, "\tnop");
+	fprintf(fq, "nop");
 }
 
 static void
 lxi(void)
 {
 
-	fprintf(fq, "\tmov\t");
-	fprintf(fq, "%s, %s", sixteen(a1), a2);
+	fprintf(fq, "mov\t%s, %s", sixteen(a1), a2);
+}
+
+static void
+inr(void)
+{
+
+	fprintf(fq, "inc\t%s", eight(a1));
+}
+
+static void
+dcr(void)
+{
+
+	fprintf(fq, "dcr\t%s", eight(a1));
 }
 
 static void
 mvi(void)
 {
 
-	fprintf(fq, "\tmov\t");
-	fprintf(fq, "%s, %s", eight(a1), a2);
+	fprintf(fq, "mov\t%s, %s", eight(a1), a2);
+}
+
+static void
+dcx(void)
+{
+
+	fprintf(fq, "dec\t%s", sixteen(a1));
+}
+
+static void
+mov(void)
+{
+
+	fprintf(fq, "mov\t%s, %s", eight(a1), eight(a2));
+}
+
+static void
+hlt(void)
+{
+
+	fprintf(fq, "hlt");
 }
 
 static void
 ret(void)
 {
 
-	fprintf(fq, "\tret");
+	fprintf(fq, "ret");
 }
 
 /*
@@ -398,15 +431,15 @@ call(void)
 {
 
 	if (isbdos() == 1) {
-		fprintf(fq, "\tpush\tax\n");
+		fprintf(fq, "push\tax\n");
 		fprintf(fq, "\tmov\tah, cl\n");
 		fprintf(fq, "\tint\t21h\n");
 		fprintf(fq, "\tpop\tax");
 	} else if (isbdos() == 2) {
-		fprintf(fq, "\tmov\tah, 4ch\n");
+		fprintf(fq, "mov\tah, 4ch\n");
 		fprintf(fq, "\tint\t21h");
 	} else {
-		fprintf(fq, "\tcall\t%s", a1);
+		fprintf(fq, "call\t%s", a1);
 	}
 }
 
@@ -414,7 +447,7 @@ static void
 org(void)
 {
 
-	fprintf(fq, "\torg\t%s", a1);
+	fprintf(fq, "org\t%s", a1);
 }
 
 static void
@@ -422,7 +455,7 @@ equ(void)
 {
 	int i;
 
-	fprintf(fq, "\tequ\t%s", a1);
+	fprintf(fq, "equ\t%s", a1);
 	if (bdosfound == 0) {
 		if (numcheck()) {
 			for (i = 0; i < sizeof(bdos); i++)
@@ -438,7 +471,14 @@ static void
 db(void)
 {
 
-	fprintf(fq, "\tdb\t%s", a1);
+	fprintf(fq, "db\t%s", a1);
+}
+
+static void
+end(void)
+{
+
+	fprintf(fq, "end");
 }
 
 /*
@@ -450,12 +490,18 @@ struct trans {
 } tab[] = {
 	{ "nop", nop },
 	{ "lxi", lxi },
+	{ "inr", inr },
+	{ "dcr", dcr },
 	{ "mvi", mvi },
+	{ "dcx", dcx },
+	{ "mov", mov },
+	{ "hlt", hlt },
 	{ "ret", ret },
 	{ "call", call },
 	{ "org", org },
 	{ "equ", equ },
-	{ "db", db }
+	{ "db", db },
+	{ "end", end }
 };
 
 static void
@@ -470,8 +516,11 @@ translate(void)
 	}
 
 	for (i = 0; i < sizeof(tab) / sizeof(tab[0]); i++) {
-		if (!strcmp(op, tab[i].op80))
+		if (!strcmp(op, tab[i].op80)) {
+			fputc('\t', fq);
 			tab[i].cb();
+			break;
+		}
 	}
 
 	if (comm[0] != '\0') {

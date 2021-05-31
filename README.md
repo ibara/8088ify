@@ -119,6 +119,9 @@ an MS-DOS termination call.
 Line separation with `!` is detected but not properly used.
 Split those lines before running `8088ify`.
 
+No macro facilities. Preprocess your assembly before running
+it through `8088ify`.
+
 License
 -------
 ISC License. See `LICENSE` for details.
