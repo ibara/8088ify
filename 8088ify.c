@@ -373,6 +373,69 @@ hlt(void)
 }
 
 static void
+add(void)
+{
+
+	fprintf(fq, "add\tal, %s", eight(a1));
+}
+
+static void
+adc(void)
+{
+
+	fprintf(fq, "adc\tal, %s", eight(a1));
+}
+
+static void
+sub(void)
+{
+
+	fprintf(fq, "sub\tal, %s", eight(a1));
+}
+
+static void
+sbb(void)
+{
+
+	fprintf(fq, "sbb\tal, %s", eight(a1));
+}
+
+static void
+ana(void)
+{
+
+	fprintf(fq, "and\tal, %s", eight(a1));
+}
+
+static void
+xra(void)
+{
+
+	fprintf(fq, "xor\tal, %s", eight(a1));
+}
+
+static void
+ora(void)
+{
+
+	fprintf(fq, "or\tal, %s", eight(a1));
+}
+
+static void
+cmp(void)
+{
+
+	fprintf(fq, "cmp\tal, %s", eight(a1));
+}
+
+static void
+adi(void)
+{
+
+	fprintf(fq, "add\tal, %s", a1);
+}
+
+static void
 ret(void)
 {
 
@@ -444,6 +507,55 @@ call(void)
 }
 
 static void
+aci(void)
+{
+
+	fprintf(fq, "adc\tal, %s", a1);
+}
+
+static void
+sui(void)
+{
+
+	fprintf(fq, "sub\tal, %s", a1);
+}
+
+static void
+sbi(void)
+{
+
+	fprintf(fq, "sbb\tal, %s", a1);
+}
+
+static void
+ani(void)
+{
+
+	fprintf(fq, "and\tal, %s", a1);
+}
+
+static void
+xri(void)
+{
+
+	fprintf(fq, "xor\tal, %s", a1);
+}
+
+static void
+ori(void)
+{
+
+	fprintf(fq, "or\tal, %s", a1);
+}
+
+static void
+cpi(void)
+{
+
+	fprintf(fq, "cmp\tal, %s", a1);
+}
+
+static void
 org(void)
 {
 
@@ -496,8 +608,24 @@ struct trans {
 	{ "dcx", dcx },
 	{ "mov", mov },
 	{ "hlt", hlt },
+	{ "add", add },
+	{ "adc", adc },
+	{ "sub", sub },
+	{ "sbb", sbb },
+	{ "ana", ana },
+	{ "xra", xra },
+	{ "ora", ora },
+	{ "cmp", cmp },
+	{ "adi", adi },
 	{ "ret", ret },
 	{ "call", call },
+	{ "aci", aci },
+	{ "sui", sui },
+	{ "sbi", sbi },
+	{ "ani", ani },
+	{ "xri", xri },
+	{ "ori", ori },
+	{ "cpi", cpi },
 	{ "org", org },
 	{ "equ", equ },
 	{ "db", db },
@@ -535,6 +663,9 @@ static void
 assemble(FILE *fp)
 {
 	int eoa;
+
+	/* DRI XLT86 User's Guide page 10 */
+	fprintf(fq, "%%define\tm\tByte 0[bx]\n");
 
 	while (1) {
 		eoa = egetline(fp);
