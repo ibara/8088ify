@@ -360,6 +360,13 @@ dcx(void)
 }
 
 static void
+daa(void)
+{
+
+	fprintf(fq, "daa");
+}
+
+static void
 cma(void)
 {
 
@@ -554,6 +561,13 @@ aci(void)
 }
 
 static void
+out(void)
+{
+
+	fprintf(fq, "out\t%s, al", a1);
+}
+
+static void
 cnc(void)
 {
 
@@ -567,6 +581,13 @@ sui(void)
 {
 
 	fprintf(fq, "sub\tal, %s", a1);
+}
+
+static void
+in(void)
+{
+
+	fprintf(fq, "in\tal, %s", a1);
 }
 
 static void
@@ -618,6 +639,13 @@ xri(void)
 }
 
 static void
+di(void)
+{
+
+	fprintf(fq, "cli");
+}
+
+static void
 cp(void)
 {
 
@@ -631,6 +659,13 @@ ori(void)
 {
 
 	fprintf(fq, "or\tal, %s", a1);
+}
+
+static void
+ei(void)
+{
+
+	fprintf(fq, "sti");
 }
 
 static void
@@ -700,6 +735,7 @@ struct trans {
 	{ "dcr", dcr },
 	{ "mvi", mvi },
 	{ "dcx", dcx },
+	{ "daa", daa },
 	{ "cma", cma },
 	{ "cmc", cmc },
 	{ "mov", mov },
@@ -718,16 +754,20 @@ struct trans {
 	{ "cz", cz },
 	{ "call", call },
 	{ "aci", aci },
+	{ "out", out },
 	{ "cnc", cnc },
 	{ "sui", sui },
+	{ "in", in },
 	{ "cc", cc },
 	{ "sbi", sbi },
 	{ "cpo", cpo },
 	{ "ani", ani },
 	{ "cpe", cpe },
 	{ "xri", xri },
+	{ "di", di },
 	{ "cp", cp },
 	{ "ori", ori },
+	{ "ei", ei },
 	{ "cm", cm },
 	{ "cpi", cpi },
 	{ "org", org },
