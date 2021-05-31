@@ -530,6 +530,18 @@ cmp(void)
 }
 
 static void
+push(void)
+{
+
+	if (!strcmp(a1, "PSW") || !strcmp(a1, "psw")) {
+		fprintf(fq, "lahf\n");
+		fprintf(fq, "\tpush\tax");
+	} else {
+		fprintf(fq, "pop\t%s", sixteen(a1));
+	}
+}
+
+static void
 newlab(void)
 {
 
@@ -648,6 +660,18 @@ jmp(void)
 		fprintf(fq, "\tret");
 	} else {
 		fprintf(fq, "jmp\t%s", a1);
+	}
+}
+
+static void
+pop(void)
+{
+
+	if (!strcmp(a1, "PSW") || !strcmp(a1, "psw")) {
+		fprintf(fq, "pop\tax\n");
+		fprintf(fq, "\tsahf");
+	} else {
+		fprintf(fq, "pop\t%s", sixteen(a1));
 	}
 }
 
@@ -990,9 +1014,11 @@ struct trans {
 	{ "xra", xra },
 	{ "ora", ora },
 	{ "cmp", cmp },
+	{ "pop", pop },
 	{ "jnz", jnz },
 	{ "jmp", jmp },
 	{ "cnz", cnz },
+	{ "push", push },
 	{ "adi", adi },
 	{ "rst", rst },
 	{ "ret", ret },
