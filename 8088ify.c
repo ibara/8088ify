@@ -521,13 +521,15 @@ isbdos(void)
 static void
 call(void)
 {
+	int b;
 
-	if (isbdos() == 1) {
+	b = isbdos();
+	if (b == 1) {
 		fprintf(fq, "push\tax\n");
 		fprintf(fq, "\tmov\tah, cl\n");
 		fprintf(fq, "\tint\t21h\n");
 		fprintf(fq, "\tpop\tax");
-	} else if (isbdos() == 2) {
+	} else if (b == 2) {
 		fprintf(fq, "mov\tah, 4ch\n");
 		fprintf(fq, "\tint\t21h");
 	} else {
@@ -536,11 +538,52 @@ call(void)
 }
 
 static void
+jmp(void)
+{
+	int b;
+
+	b = isbdos();
+	if (b == 1) {
+		fprintf(fq, "push\tax\n");
+		fprintf(fq, "\tmov\tah, cl\n");
+		fprintf(fq, "\tint\t21h\n");
+		fprintf(fq, "\tpop\tax\n");
+		fprintf(fq, "\tret");
+	} else if (b == 2) {
+		fprintf(fq, "mov\tcl, 0\n");
+		fprintf(fq, "\tmov\tdl, 0\n");
+		fprintf(fq, "\tmov\tah, 4ch\n");
+		fprintf(fq, "\tint\t21h\n");
+		fprintf(fq, "\tret");
+	} else {
+		fprintf(fq, "jmp\t%s", a1);
+	}
+}
+
+static void
+jnz(void)
+{
+
+	fprintf(fq, "jz\tL@%d\n\t", labno);
+	jmp();
+	newlab();
+}
+
+static void
 cnz(void)
 {
 
 	fprintf(fq, "jz\tL@%d\n\t", labno);
 	call();
+	newlab();
+}
+
+static void
+jz(void)
+{
+
+	fprintf(fq, "jnz\tL@%d\n\t", labno);
+	jmp();
 	newlab();
 }
 
@@ -558,6 +601,15 @@ aci(void)
 {
 
 	fprintf(fq, "adc\tal, %s", a1);
+}
+
+static void
+jnc(void)
+{
+
+	fprintf(fq, "jnae\tL@%d\n\t", labno);
+	jmp();
+	newlab();
 }
 
 static void
@@ -591,6 +643,15 @@ in(void)
 }
 
 static void
+jc(void)
+{
+
+	fprintf(fq, "jnb\tL@%d\n\t", labno);
+	jmp();
+	newlab();
+}
+
+static void
 cc(void)
 {
 
@@ -604,6 +665,15 @@ sbi(void)
 {
 
 	fprintf(fq, "sbb\tal, %s", a1);
+}
+
+static void
+jpo(void)
+{
+
+	fprintf(fq, "jp\tL@%d\n\t", labno);
+	jmp();
+	newlab();
 }
 
 static void
@@ -623,6 +693,15 @@ ani(void)
 }
 
 static void
+jpe(void)
+{
+
+	fprintf(fq, "jnp\tL@%d\n\t", labno);
+	jmp();
+	newlab();
+}
+
+static void
 cpe(void)
 {
 
@@ -636,6 +715,15 @@ xri(void)
 {
 
 	fprintf(fq, "xor\tal, %s", a1);
+}
+
+static void
+jp(void)
+{
+
+	fprintf(fq, "js\tL@%d\n\t", labno);
+	jmp();
+	newlab();
 }
 
 static void
@@ -659,6 +747,15 @@ ori(void)
 {
 
 	fprintf(fq, "or\tal, %s", a1);
+}
+
+static void
+jm(void)
+{
+
+	fprintf(fq, "jns\tL@%d\n\t", labno);
+	jmp();
+	newlab();
 }
 
 static void
@@ -762,25 +859,34 @@ struct trans {
 	{ "xra", xra },
 	{ "ora", ora },
 	{ "cmp", cmp },
+	{ "jnz", jnz },
+	{ "jmp", jmp },
 	{ "cnz", cnz },
 	{ "adi", adi },
 	{ "ret", ret },
+	{ "jz", jz} ,
 	{ "cz", cz },
 	{ "call", call },
 	{ "aci", aci },
+	{ "jnc", jnc },
 	{ "out", out },
 	{ "cnc", cnc },
 	{ "sui", sui },
+	{ "jc", jc },
 	{ "in", in },
 	{ "cc", cc },
 	{ "sbi", sbi },
+	{ "jpo", jpo },
 	{ "cpo", cpo },
 	{ "ani", ani },
+	{ "jpe", jpe },
 	{ "cpe", cpe },
 	{ "xri", xri },
+	{ "jp", jp },
 	{ "di", di },
 	{ "cp", cp },
 	{ "ori", ori },
+	{ "jm", jm },
 	{ "ei", ei },
 	{ "cm", cm },
 	{ "cpi", cpi },
