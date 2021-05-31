@@ -91,6 +91,11 @@ read in before truncation.
 Comments are carried over to the output assembly. They may
 not make sense for an 8086/8088 CPU.
 
+An attempt is made to detect calls to the CP/M BDOS:
+`call 0005h`. The first `equ` statement to assign the value
+5 to a label will be assumed to be the BDOS label and used
+for all `call` checks.
+
 License
 -------
 ISC License. See `LICENSE` for details.

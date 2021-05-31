@@ -34,7 +34,10 @@ static char a1[256];
 static char a2[256];
 static char comm[256];
 
+static char bdos[256];
+
 static int bang;
+static int bdosfound;
 
 static int
 egetline(FILE *fp)
@@ -334,7 +337,6 @@ mvi(void)
 
 	fprintf(fq, "\tmov\t");
 	fprintf(fq, "%s, %s", eight(a1), a2);
-	fprintf(fq, "\n\tmov\tah, %s", eight(a1));
 }
 
 static void
@@ -344,11 +346,56 @@ ret(void)
 	fprintf(fq, "\tret");
 }
 
+static int
+numcheck(void)
+{
+	int base;
+
+	if (isdigit(a1[0]) && (a1[strlen(a1) - 1] == 'H' ||
+	    a1[strlen(a1) - 1] == 'h')) {
+		base = 16;
+		goto check;
+	} else if (isdigit(a1[0]) && (a1[1] == 'X' || a1[1] == 'x')) {
+		base = 16;
+		goto check;
+	} else if (isdigit(a1[0])) {
+		base = 10;
+check:
+		if (strtol(a1, NULL, base) == 5)
+			return 1;
+	} else if (isalpha(a1[0])) {
+		if (bdosfound) {
+			if (!strcmp(a1, bdos))
+				return 1;
+		}
+	}
+
+	return 0;
+}
+
+static int
+isbdos(void)
+{
+	int base;
+
+	if (a1[0] == '\0')
+		return 0;
+
+	return numcheck();
+}
+
 static void
 call(void)
 {
 
-	fprintf(fq, "\tint\t21h");
+	if (isbdos()) {
+		fprintf(fq, "\tpush\tax\n");
+		fprintf(fq, "\tmov\tah, cl\n");
+		fprintf(fq, "\tint\t21h\n");
+		fprintf(fq, "\tpop\tax");
+	} else {
+		fprintf(fq, "\tcall\t%s", a1);
+	}
 }
 
 static void
@@ -361,8 +408,18 @@ org(void)
 static void
 equ(void)
 {
+	int i;
 
 	fprintf(fq, "\tequ\t%s", a1);
+	if (bdosfound == 0) {
+		if (numcheck()) {
+			for (i = 0; i < sizeof(bdos); i++)
+				bdos[i] = '\0';
+			for (i = 0; i < strlen(lab); i++)
+				bdos[i] = lab[i];
+			bdosfound = 1;
+		}
+	}
 }
 
 static void
