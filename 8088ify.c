@@ -544,6 +544,18 @@ adi(void)
 }
 
 static void
+rst(void)
+{
+
+	if (!strcmp(a1, "0")) {
+		fprintf(fq, "mov\tah, 4ch\n");
+		fprintf(fq, "\tint\t21h");
+	} else {
+		fprintf(fq, "int\t%s", a1);
+	}
+}
+
+static void
 ret(void)
 {
 
@@ -982,6 +994,7 @@ struct trans {
 	{ "jmp", jmp },
 	{ "cnz", cnz },
 	{ "adi", adi },
+	{ "rst", rst },
 	{ "ret", ret },
 	{ "jz", jz },
 	{ "cz", cz },
