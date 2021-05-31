@@ -361,6 +361,13 @@ mvi(void)
 }
 
 static void
+rlc(void)
+{
+
+	fprintf(fq, "rol\tal, 1");
+}
+
+static void
 ldax(void)
 {
 
@@ -373,6 +380,27 @@ dcx(void)
 {
 
 	fprintf(fq, "dec\t%s", sixteen(a1));
+}
+
+static void
+rrc(void)
+{
+
+	fprintf(fq, "ror\tal, 1");
+}
+
+static void
+ral(void)
+{
+
+	fprintf(fq, "rcl\tal, 1");
+}
+
+static void
+rar(void)
+{
+
+	fprintf(fq, "rcr\tal, 1");
 }
 
 static void
@@ -394,6 +422,13 @@ sta(void)
 {
 
 	fprintf(fq, "mov\t%s, al", a1);
+}
+
+static void
+stc(void)
+{
+
+	fprintf(fq, "stc");
 }
 
 static void
@@ -876,11 +911,16 @@ struct trans {
 	{ "inr", inr },
 	{ "dcr", dcr },
 	{ "mvi", mvi },
+	{ "rlc", rlc },
 	{ "ldax", ldax },
 	{ "dcx", dcx },
+	{ "rrc", rrc },
+	{ "ral", ral },
+	{ "rar", rar },
 	{ "daa", daa },
 	{ "cma", cma },
 	{ "sta", sta },
+	{ "stc", stc },
 	{ "lda", lda },
 	{ "cmc", cmc },
 	{ "mov", mov },
