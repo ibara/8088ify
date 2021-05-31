@@ -55,9 +55,9 @@ egetline(FILE *fp)
 		ch = fgetc(fp);
 
 	if (ch == EOF)
-		return 0;
+		return 1;
 
-	return 1;
+	return 0;
 }
 
 static int
@@ -410,18 +410,19 @@ translate(void)
 	fputc('\n', fq);
 }
 
-static int
+static void
 assemble(FILE *fp)
 {
 	int eoa;
 
-	eoa = egetline(fp);
+	while (1) {
+		eoa = egetline(fp);
+		lex();
+		translate();
 
-	lex();
-
-	translate();
-
-	return eoa;
+		if (eoa)
+			break;
+	}
 }
 
 int
@@ -430,23 +431,22 @@ main(int argc, char *argv[])
 	FILE *fp;
 
 	if (argc != 3) {
-		fputs("usage: 8088 infile.asm outfile.asm\n", stderr);
+		fputs("usage: 8088ify infile.asm outfile.asm\n", stderr);
 		exit(1);
 	}
 
 	if ((fp = fopen(argv[1], "r")) == NULL) {
-		fputs("8088: can't open input file\n", stderr);
+		fputs("8088ify: can't open input file\n", stderr);
 		exit(1);
 	}
 
 	if ((fq = fopen(argv[2], "w+")) == NULL) {
 		fclose(fp);
-		fputs("8088: can't open output file\n", stderr);
+		fputs("8088ify: can't open output file\n", stderr);
 		exit(1);
 	}
 
-	while (assemble(fp))
-		;
+	assemble(fp);
 
 	fclose(fq);
 	fclose(fp);

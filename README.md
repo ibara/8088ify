@@ -58,6 +58,29 @@ semantic or syntactic analysis; it assumes the input
 assembly is valid. The user should review the output before
 attempting assembly.
 
+Creating binaries
+-----------------
+`8088ify` targets
+[nasm](https://nasm.us/).
+It has been a long time since nasm built 16-bit DOS
+binaries. In this repository you will find binaries of nasm
+0.98.31, as found on Sourceforge
+[Sourceforget](https://sourceforge.net/projects/nasm/files/DOS%2016-bit%20binaries%20%28OBSOLETE%29/),
+which do work in an 8086 (tested via DOSBox-X).
+
+To create binaries, the following nasm command can be used:
+```
+nasm -f bin -o prog.com prog.asm
+```
+Where `prog.asm` is the name of your assembly program output
+from `8088ify` and `prog.com` is the name you want for your
+final binary.
+
+NOTE: This version of nasm is licensed under the LGPLv2.1+.
+You can find a copy of the LGPLv2.1 license
+[here](https://www.gnu.org/licenses/old-licenses/lgpl-2.1.en.html).
+This license does not affect the license of `8088ify`.
+
 Caveats
 -------
 `8088ify` assumes no single line of input assembly code will
