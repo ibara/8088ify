@@ -38,6 +38,7 @@ static char bdos[256];
 
 static int bang;
 static int bdosfound;
+static int labno;
 
 static int
 egetline(FILE *fp)
@@ -359,6 +360,20 @@ dcx(void)
 }
 
 static void
+cma(void)
+{
+
+	fprintf(fq, "not\tal");
+}
+
+static void
+cmc(void)
+{
+
+	fprintf(fq, "cmc");
+}
+
+static void
 mov(void)
 {
 
@@ -426,6 +441,13 @@ cmp(void)
 {
 
 	fprintf(fq, "cmp\tal, %s", eight(a1));
+}
+
+static void
+newlab(void)
+{
+
+	fprintf(fq, "\nL@%d:", labno++);
 }
 
 static void
@@ -507,10 +529,37 @@ call(void)
 }
 
 static void
+cnz(void)
+{
+
+	fprintf(fq, "jz\tL@%d\n\t", labno);
+	call();
+	newlab();
+}
+
+static void
+cz(void)
+{
+
+	fprintf(fq, "jnz\tL@%d\n\t", labno);
+	call();
+	newlab();
+}
+
+static void
 aci(void)
 {
 
 	fprintf(fq, "adc\tal, %s", a1);
+}
+
+static void
+cnc(void)
+{
+
+	fprintf(fq, "jnae\tL@%d\n\t", labno);
+	call();
+	newlab();
 }
 
 static void
@@ -521,10 +570,28 @@ sui(void)
 }
 
 static void
+cc(void)
+{
+
+	fprintf(fq, "jnb\tL@%d\n\t", labno);
+	call();
+	newlab();
+}
+
+static void
 sbi(void)
 {
 
 	fprintf(fq, "sbb\tal, %s", a1);
+}
+
+static void
+cpo(void)
+{
+
+	fprintf(fq, "jp\tL@%d\n\t", labno);
+	call();
+	newlab();
 }
 
 static void
@@ -535,6 +602,15 @@ ani(void)
 }
 
 static void
+cpe(void)
+{
+
+	fprintf(fq, "jnp\tL@%d\n\t", labno);
+	call();
+	newlab();
+}
+
+static void
 xri(void)
 {
 
@@ -542,10 +618,28 @@ xri(void)
 }
 
 static void
+cp(void)
+{
+
+	fprintf(fq, "js\tL@%d\n\t", labno);
+	call();
+	newlab();
+}
+
+static void
 ori(void)
 {
 
 	fprintf(fq, "or\tal, %s", a1);
+}
+
+static void
+cm(void)
+{
+
+	fprintf(fq, "jns\tL@%d\n\t", labno);
+	call();
+	newlab();
 }
 
 static void
@@ -590,7 +684,7 @@ static void
 end(void)
 {
 
-	fprintf(fq, "end");
+	/* Do nothing */
 }
 
 /*
@@ -606,6 +700,8 @@ struct trans {
 	{ "dcr", dcr },
 	{ "mvi", mvi },
 	{ "dcx", dcx },
+	{ "cma", cma },
+	{ "cmc", cmc },
 	{ "mov", mov },
 	{ "hlt", hlt },
 	{ "add", add },
@@ -616,15 +712,23 @@ struct trans {
 	{ "xra", xra },
 	{ "ora", ora },
 	{ "cmp", cmp },
+	{ "cnz", cnz },
 	{ "adi", adi },
 	{ "ret", ret },
+	{ "cz", cz },
 	{ "call", call },
 	{ "aci", aci },
+	{ "cnc", cnc },
 	{ "sui", sui },
+	{ "cc", cc },
 	{ "sbi", sbi },
+	{ "cpo", cpo },
 	{ "ani", ani },
+	{ "cpe", cpe },
 	{ "xri", xri },
+	{ "cp", cp },
 	{ "ori", ori },
+	{ "cm", cm },
 	{ "cpi", cpi },
 	{ "org", org },
 	{ "equ", equ },
