@@ -716,6 +716,20 @@ db(void)
 }
 
 static void
+dw(void)
+{
+
+	fprintf(fq, "dw\t%s", a1);
+}
+
+static void
+ds(void)
+{
+
+	fprintf(fq, "resb\t%s", a1);
+}
+
+static void
 end(void)
 {
 
@@ -773,6 +787,8 @@ struct trans {
 	{ "org", org },
 	{ "equ", equ },
 	{ "db", db },
+	{ "dw", dw },
+	{ "ds", ds },
 	{ "end", end }
 };
 
