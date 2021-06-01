@@ -574,6 +574,15 @@ ret(void)
 	fprintf(fq, "ret");
 }
 
+static void
+rz(void)
+{
+
+	fprintf(fq, "jnz\tL@%d\n\t", labno);
+	ret();
+	newlab();
+}
+
 /*
  * Checking special cases for call.
  *
@@ -664,6 +673,15 @@ jmp(void)
 }
 
 static void
+rnz(void)
+{
+
+	fprintf(fq, "jz\tL@%d\n\t", labno);
+	ret();
+	newlab();
+}
+
+static void
 pop(void)
 {
 
@@ -719,6 +737,15 @@ aci(void)
 }
 
 static void
+rnc(void)
+{
+
+	fprintf(fq, "jnae\tL@%d\n\t", labno);
+	ret();
+	newlab();
+}
+
+static void
 jnc(void)
 {
 
@@ -758,6 +785,15 @@ in(void)
 }
 
 static void
+rc(void)
+{
+
+	fprintf(fq, "jnb\tL@%d\n\t", labno);
+	ret();
+	newlab();
+}
+
+static void
 jc(void)
 {
 
@@ -780,6 +816,15 @@ sbi(void)
 {
 
 	fprintf(fq, "sbb\tal, %s", a1);
+}
+
+static void
+rpo(void)
+{
+
+	fprintf(fq, "jp\tL@%d\n\t", labno);
+	ret();
+	newlab();
 }
 
 static void
@@ -813,6 +858,15 @@ ani(void)
 {
 
 	fprintf(fq, "and\tal, %s", a1);
+}
+
+static void
+rpe(void)
+{
+
+	fprintf(fq, "jnp\tL@%d\n\t", labno);
+	ret();
+	newlab();
 }
 
 static void
@@ -855,6 +909,15 @@ xri(void)
 }
 
 static void
+rp(void)
+{
+
+	fprintf(fq, "js\tL@%d\n\t", labno);
+	ret();
+	newlab();
+}
+
+static void
 jp(void)
 {
 
@@ -884,6 +947,15 @@ ori(void)
 {
 
 	fprintf(fq, "or\tal, %s", a1);
+}
+
+static void
+rm(void)
+{
+
+	fprintf(fq, "jns\tL@%d\n\t", labno);
+	ret();
+	newlab();
 }
 
 static void
@@ -1014,6 +1086,7 @@ struct trans {
 	{ "xra", xra },
 	{ "ora", ora },
 	{ "cmp", cmp },
+	{ "rnz", rnz },
 	{ "pop", pop },
 	{ "jnz", jnz },
 	{ "jmp", jmp },
@@ -1021,32 +1094,39 @@ struct trans {
 	{ "push", push },
 	{ "adi", adi },
 	{ "rst", rst },
+	{ "rz", rz },
 	{ "ret", ret },
 	{ "jz", jz },
 	{ "cz", cz },
 	{ "call", call },
 	{ "aci", aci },
+	{ "rnc", rnc },
 	{ "jnc", jnc },
 	{ "out", out },
 	{ "cnc", cnc },
 	{ "sui", sui },
+	{ "rc", rc },
 	{ "jc", jc },
 	{ "in", in },
 	{ "cc", cc },
 	{ "sbi", sbi },
+	{ "rpo", rpo },
 	{ "jpo", jpo },
 	{ "xthl", xthl },
 	{ "cpo", cpo },
 	{ "ani", ani },
+	{ "rpe", rpe },
 	{ "pchl", pchl },
 	{ "jpe", jpe },
 	{ "xchg", xchg },
 	{ "cpe", cpe },
 	{ "xri", xri },
+	{ "rp", rp },
 	{ "jp", jp },
 	{ "di", di },
 	{ "cp", cp },
 	{ "ori", ori },
+	{ "rm", rm },
 	{ "sphl", sphl },
 	{ "jm", jm },
 	{ "ei", ei },
