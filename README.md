@@ -11,13 +11,8 @@ Intel 8086/8088.
 
 Why?
 ----
-`8088ify` arose as a tongue-in-cheek reference to the jam's
-purpose: celebrating the 40th anniversary of the IBM PC, aka
-the IBM 5150. It is very clearly a retrocomputing event.
-What better way to commemorate this retrocomputing milestone
-than to create a program that aids in retrocomputing from
-the 5150's own vantage point: modernizing code written for
-its precedessor CPU.
+I could not find an open source translator between Intel
+8080 and Intel 8086.
 
 It may be lesser-known that Intel had the porting of 8080
 assmebly code to 8086/8088 in mind when designing the
@@ -33,10 +28,6 @@ related DRI operating systems. The XLT86 users manual, which
 contains DRI's own 8080 to 8086/8088 conversion tables, is
 [available](http://s100computers.com/Software%20Folder/Assembler%20Collection/Digital%20Research%20XLT86%20Manual.pdf),
 and which I used for `8088ify`.
-
-As I could not find any open source tools or any tools to
-convert not only from 8080 to 8086/8088 but also CP/M to
-MS-DOS, `8088ify` was born.
 
 Building
 --------
@@ -123,6 +114,11 @@ Split those lines before running `8088ify`.
 
 No macro facilities. Preprocess your assembly before running
 it through `8088ify`.
+
+Bugs
+----
+Lots. Let me know about them via Issues (even better: Pull
+Requests with diffs).
 
 License
 -------
