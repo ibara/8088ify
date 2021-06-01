@@ -53,6 +53,12 @@ compiler invocation is recommended:
 > wcl -0 -os -mt 8088ify.c
 ```
 
+When compiling for CP/M with the Amsterdam Compiler Kit, the
+following compiler invocation is recommended:
+```
+$ ack -mcpm -O2 -o 8088ify.com 8088ify.c
+```
+
 The included `Makefile` is for Unix, sorry.
 
 Running
