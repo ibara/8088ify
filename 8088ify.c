@@ -387,9 +387,9 @@ static void
 inx(void)
 {
 
-	fprintf(fq, "lahf\n");
+	fprintf(fq, "sahf\n");
 	fprintf(fq, "\tinc\t%s\n", sixteen(a1));
-	fprintf(fq, "\tsahf");
+	fprintf(fq, "\tlahf");
 }
 
 static void
