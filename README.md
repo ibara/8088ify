@@ -41,6 +41,12 @@ includes a `strtol()` function. I may remedy this in the
 future with a built-in `strtol()` function, but as Open
 Watcom v2 has the function, I have not (yet) found a need.
 
+`8088ify` can be compiled as a standalone application for
+Unix, natively compiled on MS-DOS using Open Watcom v2,
+cross compiled on Unix for MS-DOS using the Amsterdam
+Compiler Kit, or cross compiled on Unix for CP/M using the
+Amsterdam Compiler Kit.
+
 When compiling for Unix, the following compiler invocation
 is recomended:
 ```
@@ -51,6 +57,12 @@ When compiling for MS-DOS with Open Watcom v2, the following
 compiler invocation is recommended:
 ```
 > wcl -0 -os -mt 8088ify.c
+```
+
+When compiling for MS-DOS with the Amsterdam Compiler Kit,
+the following compiler invocation is recommended:
+```
+$ ack -mmsdos -O2 -o 8088ify.com 8088ify.c
 ```
 
 When compiling for CP/M with the Amsterdam Compiler Kit, the
