@@ -1238,8 +1238,8 @@ assemble(FILE *fp)
 	int eoa;
 
 	/* DRI XLT86 User's Guide page 10 */
-	fprintf(fq, "%%define\tM\tByte 0[bx]\n");
-	fprintf(fq, "%%define\tm\tByte 0[bx]\n");
+	fprintf(fq, "%%define\tM\tByte [bx]\n");
+	fprintf(fq, "%%define\tm\tByte [bx]\n");
 
 	while (1) {
 		eoa = egetline(fp);
