@@ -24,7 +24,7 @@
  * Written for PCjam 2021: https://pcjam.gitlab.io/
  */
 
-FILE *fq;
+static FILE *fq;
 
 static char line[256];
 
