@@ -254,7 +254,7 @@ again:
 
 	/* Second argument */
 	j = 0;
-	while (!endoftoken(line[i]))
+	while (line[i] != '\0' && line[i] != ';' && line[i] !='!')
 		a2[j++] = line[i++];
 
 	if (line[i] == '!') {
@@ -359,7 +359,7 @@ static void
 dcr(void)
 {
 
-	fprintf(fq, "dcr\t%s", eight(a1));
+	fprintf(fq, "dec\t%s", eight(a1));
 }
 
 static void
@@ -1194,6 +1194,7 @@ assemble(FILE *fp)
 	int eoa;
 
 	/* DRI XLT86 User's Guide page 10 */
+	fprintf(fq, "%%define\tM\tByte 0[bx]\n");
 	fprintf(fq, "%%define\tm\tByte 0[bx]\n");
 
 	while (1) {
