@@ -377,6 +377,16 @@ rlc(void)
 }
 
 static void
+dad(void)
+{
+
+	if (!strcmp(a1, "H") || !strcmp(a1, "h"))
+		fprintf(fq, "shl\tbx, 1");
+	else
+		fprintf(fq, "add\tbx, %s", sixteen(a1));
+}
+
+static void
 ldax(void)
 {
 
@@ -1073,6 +1083,7 @@ struct trans {
 	{ "dcr", dcr },
 	{ "mvi", mvi },
 	{ "rlc", rlc },
+	{ "dad", dad },
 	{ "ldax", ldax },
 	{ "dcx", dcx },
 	{ "rrc", rrc },
