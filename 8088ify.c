@@ -340,6 +340,15 @@ stax(void)
 }
 
 static void
+inx(void)
+{
+
+	fprintf(fq, "lahf\n");
+	fprintf(fq, "\tinc\t%s\n", sixteen(a1));
+	fprintf(fq, "\tsahf");
+}
+
+static void
 inr(void)
 {
 
@@ -1059,6 +1068,7 @@ struct trans {
 	{ "nop", nop },
 	{ "lxi", lxi },
 	{ "stax", stax },
+	{ "inx", inx },
 	{ "inr", inr },
 	{ "dcr", dcr },
 	{ "mvi", mvi },
