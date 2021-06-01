@@ -484,7 +484,7 @@ static void
 lhld(void)
 {
 
-	fprintf(fq, "mov\tbx, %s", a1);
+	fprintf(fq, "mov\tbx, [%s]", a1);
 }
 
 static void
@@ -512,7 +512,7 @@ static void
 lda(void)
 {
 
-	fprintf(fq, "mov\tal, %s", a1);
+	fprintf(fq, "mov\tal, [%s]", a1);
 }
 
 static void
