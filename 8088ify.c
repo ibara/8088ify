@@ -282,39 +282,83 @@ again:
 static char *
 eight(char *a)
 {
+	char b[256];
+	static char c[256];
+	int i;
 
-	if (!strcmp(a, "A") || !strcmp(a, "a"))
+	for (i = 0; i < sizeof(b); i++)
+		b[i] = '\0';
+
+	for (i = 0; i < strlen(a); i++) {
+		if (a[i] == ' ' || a[i] == '\t')
+			break;
+		b[i] = a[i];
+	}
+
+	if (!strcmp(b, "A") || !strcmp(b, "a"))
 		return "al";
-	if (!strcmp(a, "B") || !strcmp(a, "b"))
+	if (!strcmp(b, "B") || !strcmp(b, "b"))
 		return "ch";
-	if (!strcmp(a, "C") || !strcmp(a, "c"))
+	if (!strcmp(b, "C") || !strcmp(b, "c"))
 		return "cl";
-	if (!strcmp(a, "D") || !strcmp(a, "d"))
+	if (!strcmp(b, "D") || !strcmp(b, "d"))
 		return "dh";
-	if (!strcmp(a, "E") || !strcmp(a, "e"))
-		return "hl";
-	if (!strcmp(a, "H") || !strcmp(a, "h"))
+	if (!strcmp(b, "E") || !strcmp(b, "e"))
+		return "dl";
+	if (!strcmp(b, "H") || !strcmp(b, "h"))
 		return "bh";
-	if (!strcmp(a, "L") || !strcmp(a, "l"))
+	if (!strcmp(b, "L") || !strcmp(b, "l"))
 		return "bl";
+	if (!strcmp(b, "M") || !strcmp(b, "m"))
+		return "m";
 
-	return a;
+	for (i = 0; i < sizeof(c); i++)
+		c[i] = '\0';
+
+	c[0] = '[';
+	for (i = 0; i < strlen(a); i++)
+		c[i + 1] = a[i];
+	c[i + 1] = ']';
+
+	return c;
 }
 
 static char *
 sixteen(char *a)
 {
+	char b[256];
+	static char c[256];
+	int i;
 
-	if (!strcmp(a, "B") || !strcmp(a, "b"))
+	for (i = 0; i < sizeof(b); i++)
+		b[i] = '\0';
+
+	for (i = 0; i < strlen(a); i++) {
+		if (a[i] == ' ' || a[i] == '\t')
+			break;
+		b[i] = a[i];
+	}
+
+	if (!strcmp(b, "B") || !strcmp(b, "b"))
 		return "cx";
-	if (!strcmp(a, "D") || !strcmp(a, "d"))
+	if (!strcmp(b, "D") || !strcmp(b, "d"))
 		return "dx";
-	if (!strcmp(a, "H") || !strcmp(a, "h"))
+	if (!strcmp(b, "H") || !strcmp(b, "h"))
 		return "bx";
-	if (!strcmp(a, "PSW") || !strcmp(a, "psw"))
+	if (!strcmp(b, "PSW") || !strcmp(b, "psw"))
 		return "ax";
+	if (!strcmp(b, "SP") || !strcmp(b, "sp"))
+		return "sp";
 
-	return a;
+	for (i = 0; i < sizeof(c); i++)
+		c[i] = '\0';
+
+	c[0] = '[';
+	for (i = 0; i < strlen(a); i++)
+		c[i + 1] = a[i];
+	c[i + 1] = ']';
+
+	return c;
 }
 
 static void
@@ -426,7 +470,7 @@ static void
 shld(void)
 {
 
-	fprintf(fq, "mov\t%s, bx", a1);
+	fprintf(fq, "mov\t[%s], bx", a1);
 }
 
 static void
@@ -454,7 +498,7 @@ static void
 sta(void)
 {
 
-	fprintf(fq, "mov\t%s, al", a1);
+	fprintf(fq, "mov\t[%s], al", a1);
 }
 
 static void
