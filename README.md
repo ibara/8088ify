@@ -1,10 +1,16 @@
 8088ify
 =======
 `8088ify` is an Intel 8080 CP/M 2.2 to Intel 8086 (8088)
-MS-DOS assembly program translator. This means that
+IBM PC DOS assembly program translator. This means that
 `8088ify` reads in assembly language written for the Intel
 8080 and outputs an equivalent assembly program for the
-Intel 8086/8088.
+Intel 8086/8088. As many of us home computer users begin
+transitioning to the IBM PC with its 16-bit Intel 8088 CPU
+and new IBM PC DOS operating system, we need not bid
+farewell to our CP/M programs. `8088ify` is the tool to
+bring our home computing out of the 1970s and into the
+1980s and beyond. No need to depend upon expensive and
+unreliable 8080 emulators!
 
 `8088ify` was written for
 [PCjam 2021](https://pcjam.gitlab.io/).
@@ -12,7 +18,10 @@ Intel 8086/8088.
 Why?
 ----
 I could not find an open source translator between Intel
-8080 and Intel 8086.
+8080 and Intel 8086/8088. The 8080 and 8088 CPUs were
+contemporaries from the introduction of the 8088 in 1979 and
+the discontinuation of the 8080 in 1990. Not being able to
+easily find such a translation tool surprised me.
 
 It may be lesser-known that Intel had the porting of 8080
 assmebly code to 8086/8088 in mind when designing the
@@ -33,9 +42,9 @@ Building
 --------
 Run your C compiler on `8088ify.c`. It is a single-file C
 utility and written in ANSI C. As `8088ify` was written on
-[OpenBSD](https://www.openbsd.org/), I can verify that it
-works equally as well on Unix as MS-DOS. It even runs on
-CP/M!
+[OpenBSD](https://www.openbsd.org/),
+I can verify that it works equally as well on Unix as
+MS-DOS. It even runs on CP/M!
 
 `8088ify` should compile with any ANSI C compiler that
 includes a `strtol()` function. I may remedy this in the
@@ -100,6 +109,7 @@ To create binaries, the following nasm command can be used:
 ```
 nasm -f bin -o prog.com prog.asm
 ```
+
 Where `prog.asm` is the name of your assembly program output
 from `8088ify` and `prog.com` is the name you want for your
 final binary. This also means that all programs translated
@@ -134,6 +144,19 @@ Split those lines before running `8088ify`.
 
 No macro facilities. Preprocess your assembly before running
 it through `8088ify`.
+
+I don't actually know if `8088ify` or the programs it
+generates will work on the original IBM PC DOS. But I didn't
+want to ruin the anachronistic sales pitch at the top of
+this file. `8088ify` was tested on
+[DOSBox-X](https://dosbox-x.com/)
+with the 8086 core. Both it and the programs it generates
+work with the 8086 core.
+
+Not all programs can be mechanically translated and just
+work. There exists fundamental differences between 8080 and
+8086 assembly that need to be smoothed over by hand if such
+incompatibilties exist in the original 8080 assembly.
 
 Bugs
 ----
