@@ -34,7 +34,8 @@ Building
 Run your C compiler on `8088ify.c`. It is a single-file C
 utility and written in ANSI C. As `8088ify` was written on
 [OpenBSD](https://www.openbsd.org/), I can verify that it
-works equally as well on Unix as MS-DOS.
+works equally as well on Unix as MS-DOS. It even runs on
+CP/M!
 
 `8088ify` should compile with any ANSI C compiler that
 includes a `strtol()` function. I may remedy this in the
@@ -56,13 +57,13 @@ $ cc -O2 -pipe -o 8088ify 8088ify.c
 When compiling for MS-DOS with Open Watcom v2, the following
 compiler invocation is recommended:
 ```
-> wcl -0 -os -mt 8088ify.c
+> wcl -0 -ox -mt 8088ify.c
 ```
 
 When compiling for MS-DOS with the Amsterdam Compiler Kit,
 the following compiler invocation is recommended:
 ```
-$ ack -mmsdos -O2 -o 8088ify.com 8088ify.c
+$ ack -mmsdos86 -O2 -o 8088ify.com 8088ify.c
 ```
 
 When compiling for CP/M with the Amsterdam Compiler Kit, the
@@ -71,7 +72,8 @@ following compiler invocation is recommended:
 $ ack -mcpm -O2 -o 8088ify.com 8088ify.c
 ```
 
-The included `Makefile` is for Unix, sorry.
+The included `Makefile` is for creating a Unix binary,
+sorry.
 
 Running
 -------
@@ -84,8 +86,8 @@ semantic or syntactic analysis; it assumes the input
 assembly is valid. The user should review the output before
 attempting assembly.
 
-Creating binaries
------------------
+Assembling translated programs
+------------------------------
 `8088ify` targets
 [nasm](https://nasm.us/).
 It has been a long time since nasm built 16-bit DOS
