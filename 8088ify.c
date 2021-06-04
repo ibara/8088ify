@@ -387,9 +387,9 @@ static void
 inx(void)
 {
 
-	fprintf(fq, "sahf\n");
+	fprintf(fq, "lahf\n");
 	fprintf(fq, "\tinc\t%s\n", sixteen(a1));
-	fprintf(fq, "\tlahf");
+	fprintf(fq, "\tsahf");
 }
 
 static void
@@ -1235,19 +1235,14 @@ translate(void)
 static void
 assemble(FILE *fp)
 {
-	int eoa;
 
 	/* DRI XLT86 User's Guide page 10 */
 	fprintf(fq, "%%define\tM\tByte [bx]\n");
 	fprintf(fq, "%%define\tm\tByte [bx]\n");
 
-	while (1) {
-		eoa = egetline(fp);
+	while (!egetline(fp)) {
 		lex();
 		translate();
-
-		if (eoa)
-			break;
 	}
 }
 
