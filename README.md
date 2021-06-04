@@ -24,7 +24,7 @@ the discontinuation of the 8080 in 1990. Not being able to
 easily find such a translation tool surprised me.
 
 It may be lesser-known that Intel had the porting of 8080
-assmebly code to 8086/8088 in mind when designing the
+assembly code to 8086/8088 in mind when designing the
 8086/8088. According to
 [this retrocomputing forum post](https://retrocomputingforum.com/t/translation-of-8080-code-to-8086/1309),
 Intel even produced documentation of conversion tables
