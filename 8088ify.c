@@ -424,10 +424,11 @@ static void
 dad(void)
 {
 
-	if (!strcmp(a1, "H") || !strcmp(a1, "h"))
-		fprintf(fq, "shl\tbx, 1");
-	else
-		fprintf(fq, "add\tbx, %s", sixteen(a1));
+	fprintf(fq, "lahf\n");
+	fprintf(fq, "\tadd\tbx, %s\n", sixteen(a1));
+	fprintf(fq, "\trcr\t1\n");
+	fprintf(fq, "\tsahf\n");
+	fprintf(fq, "\trcl\tsi, 1");
 }
 
 static void
