@@ -15,6 +15,8 @@ unreliable 8080 emulators!
 `8088ify` was written for
 [PCjam 2021](https://pcjam.gitlab.io/).
 
+![8088ify converting hello world program](8088ify.gif)
+
 Why?
 ----
 I could not find an open source translator between Intel
