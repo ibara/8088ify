@@ -442,7 +442,9 @@ static void
 dcx(void)
 {
 
-	fprintf(fq, "dec\t%s", sixteen(a1));
+	fprintf(fq, "lahf\n");
+	fprintf(fq, "\tdec\t%s\n", sixteen(a1));
+	fprintf(fq, "\tsahf");
 }
 
 static void
