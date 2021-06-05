@@ -280,7 +280,7 @@ again:
 }
 
 static char *
-eight(char *a)
+eight(const char *a)
 {
 	char b[256];
 	static char c[256];
@@ -324,7 +324,7 @@ eight(char *a)
 }
 
 static char *
-sixteen(char *a)
+sixteen(const char *a)
 {
 	char b[256];
 	static char c[256];
@@ -652,7 +652,7 @@ rz(void)
 }
 
 /*
- * Checking special cases for call.
+ * Checking special cases for call/jmp.
  *
  * Returns 1 if 0005h
  * Returns 2 if 0000h
@@ -661,7 +661,7 @@ rz(void)
 static int
 numcheck(void)
 {
-	int base, ret;
+	int base;
 
 	if (isdigit(a1[0]) && (a1[strlen(a1) - 1] == 'H' ||
 	    a1[strlen(a1) - 1] == 'h')) {
@@ -690,7 +690,6 @@ check:
 static int
 isbdos(void)
 {
-	int base;
 
 	if (a1[0] == '\0')
 		return 0;
