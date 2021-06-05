@@ -708,7 +708,8 @@ call(void)
 		fprintf(fq, "mov\tah, 4ch\n");
 		fprintf(fq, "\tint\t21h");
 	} else {
-		fprintf(fq, "call\t%s", a1);
+		fprintf(fq, "call\t%s\n", a1);
+		fprintf(fq, "; WARN: Is the above call correct?");
 	}
 }
 
@@ -731,7 +732,8 @@ jmp(void)
 		fprintf(fq, "\tint\t21h\n");
 		fprintf(fq, "\tret");
 	} else {
-		fprintf(fq, "jmp\t%s", a1);
+		fprintf(fq, "jmp\t%s\n", a1);
+		fprintf(fq, "; WARN: Is the above jmp correct?");
 	}
 }
 
