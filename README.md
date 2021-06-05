@@ -38,6 +38,10 @@ contains DRI's own 8080 to 8086/8088 conversion tables, is
 [available](http://s100computers.com/Software%20Folder/Assembler%20Collection/Digital%20Research%20XLT86%20Manual.pdf),
 and which I used for `8088ify`.
 
+Later, @bilegeek altered me to 
+[an official Intel document](http://www.bitsavers.org/pdf/intel/ISIS_II/9800642A_MCS-86_Assembly_Language_Converter_Operating_Instructions_for_ISIS-II_Users_Mar79.pdf)
+for Intel's own 8080 to 8086 translator program.
+
 Building
 --------
 Run your C compiler on `8088ify.c`. It is a single-file C
