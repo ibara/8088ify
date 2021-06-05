@@ -601,7 +601,9 @@ push(void)
 
 	if (!strcmp(a1, "PSW") || !strcmp(a1, "psw")) {
 		fprintf(fq, "lahf\n");
-		fprintf(fq, "\tpush\tax");
+		fprintf(fq, "\txchg\tal, ah\n");
+		fprintf(fq, "\tpush\tax\n");
+		fprintf(fq, "\txchg\tal, ah");
 	} else {
 		fprintf(fq, "pop\t%s", sixteen(a1));
 	}
@@ -755,6 +757,7 @@ pop(void)
 
 	if (!strcmp(a1, "PSW") || !strcmp(a1, "psw")) {
 		fprintf(fq, "pop\tax\n");
+		fprintf(fq, "\txchg\tal, ah\n");
 		fprintf(fq, "\tsahf");
 	} else {
 		fprintf(fq, "pop\t%s", sixteen(a1));
