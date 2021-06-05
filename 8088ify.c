@@ -426,7 +426,7 @@ dad(void)
 
 	fprintf(fq, "lahf\n");
 	fprintf(fq, "\tadd\tbx, %s\n", sixteen(a1));
-	fprintf(fq, "\trcr\t1\n");
+	fprintf(fq, "\trcr\tsi, 1\n");
 	fprintf(fq, "\tsahf\n");
 	fprintf(fq, "\trcl\tsi, 1");
 }
