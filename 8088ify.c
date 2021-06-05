@@ -35,10 +35,12 @@ static char a2[256];
 static char comm[256];
 
 static char bdos[256];
+static char warm[256];
 
 static int bang;
 static int bdosfound;
 static int labno;
+static int warmfound;
 
 static int
 egetline(FILE *fp)
@@ -682,6 +684,10 @@ check:
 			if (!strcmp(a1, bdos))
 				return 1;
 		}
+		if (warmfound) {
+			if (!strcmp(a1, warm))
+				return 2;
+		}
 	}
 
 	return 0;
@@ -1082,13 +1088,21 @@ equ(void)
 
 	fprintf(fq, "equ\t%s", a1);
 	if (bdosfound == 0) {
-		if (numcheck()) {
+		if (numcheck() == 1) {
 			for (i = 0; i < sizeof(bdos); i++)
 				bdos[i] = '\0';
 			for (i = 0; i < strlen(lab); i++)
 				bdos[i] = lab[i];
 			bdosfound = 1;
 		}
+	}
+	if (warmfound == 0)
+		if (numcheck() == 2) {
+			for (i = 0; i < sizeof(warm); i++)
+				warm[i] = '\0';
+			for (i = 0; i < strlen(lab); i++)
+				warm[i] = lab[i];
+			warmfound = 1;
 	}
 }
 

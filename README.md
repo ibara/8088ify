@@ -140,10 +140,13 @@ not make sense for an 8086/8088 CPU.
 An attempt is made to detect calls to the CP/M BDOS:
 `call 0005h`. The first `equ` statement to assign the value
 5 to a label will be assumed to be the BDOS label and used
-for all `call` checks.
+for all `call` and `jmp` checks.
 
 Calls to `0000h` are also special-cased and will result in
-an MS-DOS termination call.
+an MS-DOS termination call. As with `0005h`, the first `equ`
+statement to assign the value 0 to a label will be assumed
+to be the warm reboot label and used for all `call` and
+`jmp` checks.
 
 Line separation with `!` is detected but not properly used.
 Split those lines before running `8088ify`.
