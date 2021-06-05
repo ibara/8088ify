@@ -911,8 +911,9 @@ static void
 xthl(void)
 {
 
-	fprintf(fq, "mov\tbp, sp\n");
-	fprintf(fq, "\txchg\tbx, [bp]");
+	fprintf(fq, "pop\tsi\n");
+	fprintf(fq, "\txchg\tbx, si\n");
+	fprintf(fq, "\tpush\tsi");
 }
 
 static void
