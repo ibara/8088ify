@@ -607,7 +607,7 @@ push(void)
 		fprintf(fq, "\tpush\tax\n");
 		fprintf(fq, "\txchg\tal, ah");
 	} else {
-		fprintf(fq, "pop\t%s", sixteen(a1));
+		fprintf(fq, "push\t%s", sixteen(a1));
 	}
 }
 
