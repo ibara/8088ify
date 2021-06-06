@@ -1238,11 +1238,13 @@ translate(void)
 			fputc(':', fq);
 	}
 
-	for (i = 0; i < sizeof(tab) / sizeof(tab[0]); i++) {
-		if (!strcmp(op, tab[i].op80)) {
-			fputc('\t', fq);
-			tab[i].cb();
-			break;
+	if (op[0] != '\0') {
+		for (i = 0; i < sizeof(tab) / sizeof(tab[0]); i++) {
+			if (!strcmp(op, tab[i].op80)) {
+				fputc('\t', fq);
+				tab[i].cb();
+				break;
+			}
 		}
 	}
 
