@@ -127,6 +127,20 @@ You can find a copy of the LGPLv2.1 license
 [here](https://www.gnu.org/licenses/old-licenses/lgpl-2.1.en.html).
 This license does not affect the license of `8088ify`.
 
+Examples
+--------
+In the `examples` directory you will find two example
+programs: `hello.asm` which is a typical hello world
+program and `TST8080.ASM` which tests all the opcodes of the
+8080 to ensure correct functionality.
+
+To demonstrate `8088ify`, there are two additional example
+programs: `test1.asm` and `test2.asm`. The `test1.asm` file
+is the result of running `TST8080.ASM` through `8088ify`.
+The `test2.asm` file is the result of fixing all the nasm
+errors reported on `test1.asm`. A diff between the two files
+can be found in `test.diff`.
+
 Caveats
 -------
 `8088ify` assumes no single line of input assembly code will
@@ -169,8 +183,10 @@ incompatibilties exist in the original 8080 assembly.
 
 Bugs
 ----
-Lots. Let me know about them via Issues (even better: Pull
-Requests with diffs).
+None! As far as I know...
+
+If you find one, please open an Issue or (better!) a Pull
+Request with a diff.
 
 License
 -------

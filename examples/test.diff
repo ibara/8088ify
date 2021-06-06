@@ -1,0 +1,73 @@
+--- test1.asm	Sun Jun  6 01:46:33 2021
++++ test2.asm	Sun Jun  6 01:49:56 2021
+@@ -26,7 +26,7 @@
+ 	org	00100H
+ 
+ ;
+-	jmp	CPU
++	jmp	eCPU
+ ; WARN: Is the above jmp correct?	;JUMP TO 8080 CPU DIAGNOSTIC
+ ;
+ WELCOM:	db	'MICROCOSM ASSOCIATES 8080/8085 CPU DIAGNOSTIC',13,10
+@@ -118,7 +118,7 @@
+ ;
+ ;TEST JUMP INSTRUCTIONS AND FLAGS
+ ;
+-CPU:	mov	sp, STACK		;SET THE STACK POINTER
++eCPU:	mov	sp, STACK		;SET THE STACK POINTER
+ 	mov	bx, WELCOM
+ 	call	MSG
+ ; WARN: Is the above call correct?
+@@ -738,8 +738,7 @@
+ 	mov	cl, 045H
+ 	mov	dh, 046H
+ 	mov	dl, 047H
+-	mov	bh, (TEMP0 / 0FFH)		;HIGH BYTE OF TEST MEMORY LOCATION
+-	mov	bl, (TEMP0 AND 0FFH)		;LOW BYTE OF TEST MEMORY LOCATION
++	mov	bx, TEMP0
+ 	mov	m, ch
+ 	mov	ch, 000H
+ 	mov	ch, m
+@@ -777,27 +776,24 @@
+ ; WARN: Is the above call correct?
+ L@86:	;TEST "MOV" M,E AND E,M
+ 	mov	m, bh
+-	mov	bh, (TEMP0 / 0FFH)
+-	mov	bl, (TEMP0 AND 0FFH)
++	mov	bx, TEMP0
++	mov	al, bh
+ 	mov	bh, m
+-	mov	al, (TEMP0 / 0FFH)
+ 	cmp	al, bh
+ 	jz	L@87
+ 	call	CPUER
+ ; WARN: Is the above call correct?
+ L@87:	;TEST "MOV" M,H AND H,M
+ 	mov	m, bl
+-	mov	bh, (TEMP0 / 0FFH)
+-	mov	bl, (TEMP0 AND 0FFH)
++	mov	bx, TEMP0
++	mov	al, bl
+ 	mov	bl, m
+-	mov	al, (TEMP0 AND 0FFH)
+ 	cmp	al, bl
+ 	jz	L@88
+ 	call	CPUER
+ ; WARN: Is the above call correct?
+ L@88:	;TEST "MOV" M,L AND L,M
+-	mov	bh, (TEMP0 / 0FFH)
+-	mov	bl, (TEMP0 AND 0FFH)
++	mov	bx, TEMP0
+ 	mov	al, 032H
+ 	mov	m, al
+ 	cmp	al, m
+@@ -818,8 +814,7 @@
+ 	call	CPUER
+ ; WARN: Is the above call correct?
+ L@91:	;TEST "MOV" A,M
+-	mov	bh, (TEMP0 / 0FFH)
+-	mov	bl, (TEMP0 AND 0FFH)
++	mov	bx, TEMP0
+ 	mov	al, m
+ 	sub	al, m
+ 	jz	L@92
