@@ -1,7 +1,7 @@
 8088ify
 =======
 `8088ify` is an Intel 8080 CP/M 2.2 to Intel 8086 (8088)
-IBM PC DOS assembly program translator. This means that
+MS-DOS assembly language translator. This means that
 `8088ify` reads in assembly language written for the Intel
 8080 and outputs an equivalent assembly program for the
 Intel 8086/8088. As many of us home computer users begin
