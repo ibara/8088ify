@@ -312,7 +312,7 @@ eight(const char *a)
 	if (!strcmp(b, "L") || !strcmp(b, "l"))
 		return "bl";
 	if (!strcmp(b, "M") || !strcmp(b, "m"))
-		return "m";
+		return "Byte [bx]";
 
 	for (i = 0; i < sizeof(c); i++)
 		c[i] = '\0';
@@ -1259,10 +1259,6 @@ translate(void)
 static void
 assemble(FILE *fp)
 {
-
-	/* DRI XLT86 User's Guide page 10 */
-	fprintf(fq, "%%define\tM\tByte [bx]\n");
-	fprintf(fq, "%%define\tm\tByte [bx]\n");
 
 	while (!egetline(fp)) {
 		lex();
