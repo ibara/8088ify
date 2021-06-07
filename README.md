@@ -181,6 +181,12 @@ work. There exists fundamental differences between 8080 and
 8086 assembly that need to be smoothed over by hand if such
 incompatibilties exist in the original 8080 assembly.
 
+If you see the following warning from nasm:
+`warning: uninitialized space declared in .text section: zeroing`
+everything is fine. This is in fact the desired behavior.
+Newer versions of nasm have a command line option to disable
+this warning but the older 16-bit versions of nasm do not.
+
 Bugs
 ----
 None! As far as I know...
