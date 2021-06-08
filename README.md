@@ -50,7 +50,7 @@ Run your C compiler on `8088ify.c`. It is a single-file C
 utility and written in ANSI C. As `8088ify` was written on
 [OpenBSD](https://www.openbsd.org/),
 I can verify that it works equally as well on Unix as
-MS-DOS. It even runs on CP/M!
+MS-DOS. It even runs on CP/M and Windows!
 
 `8088ify` should compile with any ANSI C compiler that
 includes a `strtol()` function. I may remedy this in the
@@ -58,7 +58,9 @@ future with a built-in `strtol()` function, but as Open
 Watcom v2 has the function, I have not (yet) found a need.
 
 `8088ify` can be compiled as a standalone application for
-Unix, natively compiled on MS-DOS using
+Unix, as a standalone application for Windows using the
+[Digital Mars C/C++ Compiler](https://digitalmars.com/),
+natively compiled on MS-DOS using
 [Open Watcom v2](https://open-watcom.github.io/),
 cross compiled on Unix for MS-DOS using
 [the Amsterdam Compiler Kit](http://tack.sourceforge.net/),
@@ -69,6 +71,12 @@ When compiling for Unix, the following compiler invocation
 is recomended:
 ```
 $ cc -O2 -pipe -o 8088ify 8088ify.c
+```
+
+When compiling for Windows, the following compiler
+invocation is recommended:
+```
+> dmc 8088ify.c -o
 ```
 
 When compiling for MS-DOS with Open Watcom v2, the following
