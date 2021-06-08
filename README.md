@@ -58,10 +58,12 @@ future with a built-in `strtol()` function, but as Open
 Watcom v2 has the function, I have not (yet) found a need.
 
 `8088ify` can be compiled as a standalone application for
-Unix, natively compiled on MS-DOS using Open Watcom v2,
-cross compiled on Unix for MS-DOS using the Amsterdam
-Compiler Kit, or cross compiled on Unix for CP/M using the
-Amsterdam Compiler Kit.
+Unix, natively compiled on MS-DOS using
+[Open Watcom v2](https://open-watcom.github.io/),
+cross compiled on Unix for MS-DOS using
+[the Amsterdam Compiler Kit](http://tack.sourceforge.net/),
+or cross compiled on Unix for CP/M using the Amsterdam
+Compiler Kit.
 
 When compiling for Unix, the following compiler invocation
 is recomended:
