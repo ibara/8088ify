@@ -17,11 +17,20 @@ unreliable 8080 emulators!
 
 ![8088ify converting hello world program](8088ify.gif)
 
+We're famous!
+-------------
+`8088ify` has been featured on
+[Hacker News](https://news.ycombinator.com/item?id=27399039)
+and
+[Hackaday](https://hackaday.com/2021/06/13/translate-your-cp-m-code-to-8086-and-leave-the-1970s-behind/).
+
+Thanks to everyone for sharing this project.
+
 Why?
 ----
 I could not find an open source translator between Intel
 8080 and Intel 8086/8088. The 8080 and 8088 CPUs were
-contemporaries from the introduction of the 8088 in 1979 and
+contemporaries from the introduction of the 8088 in 1979 to
 the discontinuation of the 8080 in 1990. Not being able to
 easily find such a translation tool surprised me.
 
