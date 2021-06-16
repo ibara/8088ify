@@ -710,10 +710,8 @@ call(void)
 
 	b = isbdos();
 	if (b == 1) {
-		fprintf(fq, "push\tax\n");
-		fprintf(fq, "\tmov\tah, cl\n");
-		fprintf(fq, "\tint\t21h\n");
-		fprintf(fq, "\tpop\tax");
+		fprintf(fq, "mov\tah, cl\n");
+		fprintf(fq, "\tint\t21h");
 	} else if (b == 2) {
 		fprintf(fq, "mov\tah, 4ch\n");
 		fprintf(fq, "\tint\t21h");
@@ -730,17 +728,12 @@ jmp(void)
 
 	b = isbdos();
 	if (b == 1) {
-		fprintf(fq, "push\tax\n");
-		fprintf(fq, "\tmov\tah, cl\n");
+		fprintf(fq, "mov\tah, cl\n");
 		fprintf(fq, "\tint\t21h\n");
-		fprintf(fq, "\tpop\tax\n");
 		fprintf(fq, "\tret");
 	} else if (b == 2) {
-		fprintf(fq, "mov\tcl, 0\n");
-		fprintf(fq, "\tmov\tdl, 0\n");
-		fprintf(fq, "\tmov\tah, 4ch\n");
-		fprintf(fq, "\tint\t21h\n");
-		fprintf(fq, "\tret");
+		fprintf(fq, "mov\tah, 4ch\n");
+		fprintf(fq, "\tint\t21h");
 	} else {
 		fprintf(fq, "jmp\t%s\n", a1);
 		fprintf(fq, "; WARN: Is the above jmp correct?");
