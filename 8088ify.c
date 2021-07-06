@@ -669,7 +669,7 @@ numcheck(void)
 	    a1[strlen(a1) - 1] == 'h')) {
 		base = 16;
 		goto check;
-	} else if (isdigit(a1[0]) && (a1[1] == 'X' || a1[1] == 'x')) {
+	} else if (a1[0] == '0' && (a1[1] == 'X' || a1[1] == 'x')) {
 		base = 16;
 		goto check;
 	} else if (isdigit(a1[0])) {
