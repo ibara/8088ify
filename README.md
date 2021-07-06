@@ -219,5 +219,5 @@ ISC License. See `LICENSE` for details.
 
 Releases
 --------
-The current release is 8088ify-1.1; a tarball can be found
+The current release is 8088ify-1.2; a tarball can be found
 in the Releases section.
