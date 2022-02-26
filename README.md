@@ -23,6 +23,8 @@ We're famous!
 [Hacker News](https://news.ycombinator.com/item?id=27399039)
 and
 [Hackaday](https://hackaday.com/2021/06/13/translate-your-cp-m-code-to-8086-and-leave-the-1970s-behind/).
+We are even mentioned on
+[Wikipedia](https://en.wikipedia.org/wiki/Source-to-source_compiler#Others).
 
 Thanks to everyone for sharing this project.
 
